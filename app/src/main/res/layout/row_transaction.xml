@@ -22,12 +22,13 @@
                 android:layout_height="wrap_content"
                 android:text="Description"
                 />
+
             <TextView
                 android:id="@+id/textViewTransactionType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Transaction"
-                />
+                android:textStyle="bold" />
         </LinearLayout>
 
         <TextView
@@ -36,6 +37,7 @@
             android:layout_height="wrap_content"
             android:text="10.0 €"
             android:textSize="36sp"
+            android:gravity="end"
             android:layout_weight="3"
             />
 
