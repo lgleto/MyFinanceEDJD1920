@@ -25,7 +25,18 @@ class Transaction {
         amount = jsonObject.getDouble("amount")
         description = jsonObject.getString("description")
         date = jsonObject.getString("date")
-        type = TransactionType.valueOf(jsonObject.getString("type"))
+        val typeStr = jsonObject.getString("type")
+        type = getTransType(typeStr)
+    }
+
+    fun getTransType (typeStr : String) : TransactionType {
+        for (t in TransactionType.values()){
+            if (t.value.equals(typeStr))
+            {
+                return t
+            }
+        }
+        return TransactionType.PAYMENT
     }
 
     fun toJSON(): JSONObject {

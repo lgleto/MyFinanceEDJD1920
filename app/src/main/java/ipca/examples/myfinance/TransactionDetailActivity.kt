@@ -9,12 +9,6 @@ class TransactionDetailActivity : AppCompatActivity() {
 
     var transaction : Transaction? = null
 
-
-
-
-
-
-    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transaction_detail)
@@ -23,9 +17,9 @@ class TransactionDetailActivity : AppCompatActivity() {
             val jsonObject = JSONObject(strJson)
             transaction = Transaction(jsonObject)
         }
-
-
     }
+
+
 
     companion object{
         val TRANSACTION : String = "transaction"
