@@ -1,5 +1,6 @@
 package ipca.examples.myfinance
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -58,6 +59,13 @@ class MainActivity : AppCompatActivity() {
             textViewAmount.text = "${transactions.get(position).amount} €"
             textViewDescription.text = transactions.get(position).description
             textViewTransactionType.text = transactions.get(position).type.value
+
+            v.setOnClickListener {
+                val intent = Intent(this@MainActivity, TransactionDetailActivity::class.java)
+                intent.putExtra(TransactionDetailActivity.TRANSACTION,
+                    transactions.get(position).toJSON().toString())
+                startActivity(intent)
+            }
 
             return v
         }
