@@ -19,6 +19,7 @@ class Transaction {
         this.amount = amount
         this.description = description
         this.type = type
+        this.date = Date().toString()
     }
 
     constructor(jsonObject: JSONObject){
