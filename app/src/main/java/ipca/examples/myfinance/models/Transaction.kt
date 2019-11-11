@@ -1,5 +1,6 @@
 package ipca.examples.myfinance.models
 
+import com.google.firebase.database.DataSnapshot
 import org.json.JSONObject
 import java.util.*
 
@@ -20,6 +21,13 @@ class Transaction {
         this.description = description
         this.type = type
         this.date = Date().toString()
+    }
+
+    constructor(dataSnapshot: DataSnapshot){
+        amount = dataSnapshot.child("amount").toString().toDouble()
+        description = dataSnapshot.child("description").toString()
+        type = TransactionType.PAYMENT
+        this.date = dataSnapshot.child("date").toString()
     }
 
     constructor(jsonObject: JSONObject){

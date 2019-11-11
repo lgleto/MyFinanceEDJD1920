@@ -7,6 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import ipca.examples.myfinance.models.Transaction
 import ipca.examples.myfinance.models.TransactionType
 import kotlinx.android.synthetic.main.activity_main.*
@@ -15,18 +20,42 @@ class MainActivity : AppCompatActivity() {
 
     val transactions : MutableList<Transaction> = ArrayList<Transaction>()
 
+    val database = FirebaseDatabase.getInstance()
+    val myRef = database.getReference("users")
+
+    var adapter = TransactionAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        transactions.add(Transaction(100.0,"Mesada", TransactionType.DEPOSIT))
-        transactions.add(Transaction( 10.0,"Almoço", TransactionType.PAYMENT))
-        transactions.add(Transaction(40.0,"Propinas", TransactionType.TRANSFERS))
-        transactions.add(Transaction( 5.0,"Cafe", TransactionType.PAYMENT))
-
         title = "Balance: ${calculateAmount()} €"
 
-        listViewTransaction.adapter = TransactionAdapter()
+        listViewTransaction.adapter = adapter
+        fabAdd.setOnClickListener {
+            val intent = Intent(this@MainActivity, TransactionDetailActivity::class.java)
+
+            startActivity(intent)
+        }
+
+        val query = myRef.child(FirebaseAuth.getInstance().currentUser!!.uid)
+            .child("transaction")
+
+        query.addValueEventListener(object: ValueEventListener{
+            override fun onCancelled(error: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    var t = Transaction(postSnapshot)
+                    transactions.add(t)
+                }
+                adapter.notifyDataSetChanged()
+            }
+
+        })
+
+
     }
 
     fun calculateAmount():Double{

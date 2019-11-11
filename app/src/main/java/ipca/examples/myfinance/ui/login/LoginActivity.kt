@@ -39,6 +39,12 @@ class LoginActivity : AppCompatActivity() {
         val loginButton = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
 
+
+        // for debug porpouses
+        usernameEditText.setText("lgomes@ipca.pt")
+        passwordEditText.setText("123456")
+        // for debug porpouses
+
         loginButton.setOnClickListener {
             login(usernameEditText.text.toString(),
                 passwordEditText.text.toString())

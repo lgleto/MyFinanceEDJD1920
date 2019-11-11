@@ -2,7 +2,10 @@ package ipca.examples.myfinance
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import ipca.examples.myfinance.models.Transaction
+import ipca.examples.myfinance.models.TransactionType
 import kotlinx.android.synthetic.main.activity_transaction_detail.*
 import org.json.JSONObject
 
@@ -18,6 +21,26 @@ class TransactionDetailActivity : AppCompatActivity() {
             val jsonObject = JSONObject(strJson)
             transaction = Transaction(jsonObject)
             updateView ()
+        }
+
+        fabSave.setOnClickListener {
+
+            if (transaction == null) {
+                transaction = Transaction(
+                    editTextAmount.text.toString().toDouble(),
+                    editTextDescription.text.toString(),
+                    TransactionType.PAYMENT)
+                val database = FirebaseDatabase.getInstance()
+                val myRef = database.getReference("users")
+                    .child(FirebaseAuth.getInstance().currentUser!!.uid)
+                    .child("transaction")
+
+                myRef.push().setValue(transaction)
+                this@TransactionDetailActivity.onBackPressed()
+            }else {
+                //update transaction
+            }
+
         }
     }
 
