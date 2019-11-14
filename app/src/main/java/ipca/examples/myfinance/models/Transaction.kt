@@ -1,6 +1,7 @@
 package ipca.examples.myfinance.models
 
 import com.google.firebase.database.DataSnapshot
+import ipca.examples.myfinance.dateToString
 import org.json.JSONObject
 import java.util.*
 
@@ -20,14 +21,22 @@ class Transaction {
         this.amount = amount
         this.description = description
         this.type = type
-        this.date = Date().toString()
+        this.date = dateToString(Date())
     }
 
     constructor(dataSnapshot: DataSnapshot){
-        amount = dataSnapshot.child("amount").toString().toDouble()
-        description = dataSnapshot.child("description").toString()
-        type = TransactionType.PAYMENT
-        this.date = dataSnapshot.child("date").toString()
+        amount =  dataSnapshot.child("amount").value.toString().toDouble()
+        description = dataSnapshot.child("description").value.toString()
+        type = getTransactionType(dataSnapshot.child("type").value.toString())
+        this.date = dataSnapshot.child("date").value.toString()
+    }
+
+    fun getTransactionType(strTransaction: String) : TransactionType {
+        for (t in TransactionType.values()){
+            if (t.name.equals(strTransaction))
+                return t
+        }
+        return TransactionType.TRANSFERS
     }
 
     constructor(jsonObject: JSONObject){

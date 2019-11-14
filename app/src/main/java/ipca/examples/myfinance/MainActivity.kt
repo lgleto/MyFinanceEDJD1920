@@ -46,11 +46,13 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                transactions.clear()
                 for (postSnapshot in dataSnapshot.children) {
                     var t = Transaction(postSnapshot)
                     transactions.add(t)
                 }
                 adapter.notifyDataSetChanged()
+                title = "Balance:${calculateAmount()}"
             }
 
         })
