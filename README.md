@@ -14,6 +14,7 @@ This example was wirten during the Mobile Computing lectures in the course 'Linc
 6. Firebase 
 - login
 - realtime database
+- messaging, notifications
 
 ## Authors 
 
