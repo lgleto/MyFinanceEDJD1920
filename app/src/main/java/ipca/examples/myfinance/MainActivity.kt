@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        title = "Balance: ${calculateAmount()} €"
+        title = "${getString(R.string.balance)}: ${calculateAmount()} €"
 
         listViewTransaction.adapter = adapter
         fabAdd.setOnClickListener {
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
                     transactions.add(t)
                 }
                 adapter.notifyDataSetChanged()
-                title = "Balance:${calculateAmount()}"
+                title = "${getString(R.string.balance)}:${calculateAmount()}"
             }
 
         })
@@ -81,6 +81,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     inner class TransactionAdapter : BaseAdapter() {
+
+
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val v : View = layoutInflater.inflate(R.layout.row_transaction,parent,false)
             val textViewDescription : TextView = v.findViewById(R.id.textViewDescription)

@@ -15,6 +15,9 @@ This example was wirten during the Mobile Computing lectures in the course 'Linc
 - login
 - realtime database
 - messaging, notifications
+7. Presistance Storage
+- Shared preferences
+8. Translation
 
 ## Authors 
 
