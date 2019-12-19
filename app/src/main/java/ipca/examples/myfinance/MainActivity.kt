@@ -13,15 +13,16 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import ipca.examples.myfinance.models.Transaction
+import ipca.examples.myfinance.models.TransactionCoordinator
 import ipca.examples.myfinance.models.TransactionType
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    val transactions : MutableList<Transaction> = ArrayList<Transaction>()
+    var transactions : MutableList<Transaction> = ArrayList<Transaction>()
 
-    val database = FirebaseDatabase.getInstance()
-    val myRef = database.getReference("users")
+    //val database = FirebaseDatabase.getInstance()
+    //val myRef = database.getReference("users")
 
     var adapter = TransactionAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +38,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+
+        /*
         val query = myRef.child(FirebaseAuth.getInstance().currentUser!!.uid)
             .child("transaction")
 
@@ -55,9 +58,24 @@ class MainActivity : AppCompatActivity() {
                 title = "${getString(R.string.balance)}:${calculateAmount()}"
             }
 
-        })
+        })*/
 
 
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        TransactionCoordinator.all(this){
+            it?.let {
+                transactions = it.toMutableList()
+                adapter.notifyDataSetChanged()
+                title = "${getString(R.string.balance)}:${calculateAmount()}"
+
+            }
+        }
     }
 
     fun calculateAmount():Double{
@@ -65,13 +83,13 @@ class MainActivity : AppCompatActivity() {
         for (t in transactions){
 
             when (t.type){
-                TransactionType.PAYMENT -> {
+                TransactionType.PAYMENT.name -> {
                     total -= t.amount
                 }
-                TransactionType.TRANSFERS -> {
+                TransactionType.TRANSFERS.name -> {
                     total -= t.amount
                 }
-                TransactionType.DEPOSIT -> {
+                TransactionType.DEPOSIT.name -> {
                     total += t.amount
                 }
             }
@@ -91,7 +109,7 @@ class MainActivity : AppCompatActivity() {
 
             textViewAmount.text = "${transactions.get(position).amount} €"
             textViewDescription.text = transactions.get(position).description
-            textViewTransactionType.text = transactions.get(position).type.value
+            textViewTransactionType.text = transactions.get(position).type
 
             v.setOnClickListener {
                 val intent = Intent(this@MainActivity, TransactionDetailActivity::class.java)

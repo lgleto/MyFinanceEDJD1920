@@ -6,9 +6,13 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import ipca.examples.myfinance.models.AppDatabase
 import ipca.examples.myfinance.models.Transaction
+import ipca.examples.myfinance.models.TransactionCoordinator
 import ipca.examples.myfinance.models.TransactionType
 import kotlinx.android.synthetic.main.activity_transaction_detail.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import org.json.JSONObject
 import java.util.*
 
@@ -52,13 +56,25 @@ class TransactionDetailActivity : AppCompatActivity() {
                     editTextAmount.text.toString().toDouble(),
                     editTextDescription.text.toString(),
                     tType)
+
+                /*
                 val database = FirebaseDatabase.getInstance()
                 val myRef = database.getReference("users")
                     .child(FirebaseAuth.getInstance().currentUser!!.uid)
                     .child("transaction")
 
                 myRef.push().setValue(transaction)
-                this@TransactionDetailActivity.onBackPressed()
+
+                 */
+
+
+
+                TransactionCoordinator.insert(transaction!!,
+                    this@TransactionDetailActivity) {
+                    this@TransactionDetailActivity.onBackPressed()
+                }
+
+
             }else {
                 //update transaction
             }
@@ -78,7 +94,7 @@ class TransactionDetailActivity : AppCompatActivity() {
         transaction?.let{
             editTextAmount.setText("${it.amount} €")
             editTextDescription.setText(it.description)
-            editTextDate.setText(it.date)
+            editTextDate.setText((it.date))
         }
 
     }

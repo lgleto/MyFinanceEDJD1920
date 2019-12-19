@@ -17,19 +17,23 @@ import kotlin.concurrent.schedule
 class SplashActivity : AppCompatActivity() {
 
     val TAG = "SplashActivity"
-    private lateinit var auth: FirebaseAuth
+    //private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        auth = FirebaseAuth.getInstance()
+        //auth = FirebaseAuth.getInstance()
     }
 
     override fun onResume() {
         super.onResume()
         progressBar.visibility = View.VISIBLE
         Timer("login",false).schedule(1000){
+
+            val intent = Intent(this@SplashActivity, MainActivity::class.java)
+            startActivity(intent)
+            /*
             val prefs = PreferenceManager.getDefaultSharedPreferences(this@SplashActivity)
             val usernameStored = prefs.getString("username","")
             val passwordStored = prefs.getString("password","")
@@ -65,6 +69,9 @@ class SplashActivity : AppCompatActivity() {
                 val intent = Intent(this@SplashActivity, LoginActivity::class.java)
                 startActivity(intent)
             }
+
+
+             */
         }
     }
 }
